@@ -22,7 +22,7 @@ const esAdminRole = ( req, res = response, next ) => {
 
 
 const tieneRole = ( ...roles  ) => {
-    return (req, res = response, next) => {
+    return (req, res = response, next) => { // It must return a function because we are creating a function with any kind of arguments such as "...roles"
         
         if ( !req.usuario ) {
             return res.status(500).json({
@@ -30,7 +30,7 @@ const tieneRole = ( ...roles  ) => {
             });
         }
 
-        if ( !roles.includes( req.usuario.rol ) ) {
+        if ( !roles.includes( req.usuario.rol ) ) { // Request contains object usuario because it has been added in the previous middleware function validarJWT
             return res.status(401).json({
                 msg: `El servicio requiere uno de estos roles ${ roles }`
             });

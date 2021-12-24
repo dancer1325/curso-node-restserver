@@ -6,13 +6,13 @@ const {
     validarJWT,
     esAdminRole,
     tieneRole,
-} = require("../middlewares");
+} = require("../middlewares"); // Look for the index.js file into this path
 
 const {
     esRoleValido,
     emailExiste,
     existeUsuarioPorId,
-} = require("../helpers/db-validators");
+} = require("../helpers/db-validators"); // Look for the index.js file into this path
 
 const {
     usuariosGet,

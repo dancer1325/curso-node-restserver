@@ -40,7 +40,7 @@ UsuarioSchema.methods.toJSON = function() { // Add functionality to the schemas,
     const { __v, password, _id, ...usuario  } = this.toObject(); // "this" only works in "normal" functions, not in "arrow" functions
     // this.toObject returns the literal javascript object
     // Destructuring to take out __v and password, outside the rest
-    usuario.uid = _id;
+    usuario.uid = _id; // Switch the name of the property "_id" --> "uid" used each time that this method is invoked
     return usuario; // --> It won't return neither __v nor password
 }
 

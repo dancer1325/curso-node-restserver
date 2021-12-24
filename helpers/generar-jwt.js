@@ -8,15 +8,16 @@ const generarJWT = ( uid = '' ) => {
 
         const payload = { uid };
 
+        // Generate JWT, based on the uid and a secret
         jwt.sign( payload, process.env.SECRETORPRIVATEKEY, {
-            expiresIn: '4h'
-        }, ( err, token ) => {
+            expiresIn: '4h' // Valid time previous to expire this JWT generated
+        }, ( err, token ) => { // 1º argument is always the error, 2º argument is always the JWT generated
 
             if ( err ) {
                 console.log(err);
                 reject( 'No se pudo generar el token' )
             } else {
-                resolve( token );
+                resolve( token ); // Continue with the execution
             }
         })
 
