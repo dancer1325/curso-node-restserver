@@ -5,11 +5,12 @@ const mongoose = require('mongoose');
 const dbConnection = async() => {
 
     try {
+        console.log('MongoDB url' + process.env.MONGODB_CNN);
 
         await mongoose.connect( process.env.MONGODB_CNN, {
             useNewUrlParser: true,
             useUnifiedTopology: true,
-            useCreateIndex: true,
+            useCreateIndex: true, // Necessary property to create indexes
             useFindAndModify: false
         });
     

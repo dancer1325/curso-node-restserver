@@ -4,7 +4,7 @@ const CategoriaSchema = Schema({
     nombre: {
         type: String,
         required: [true, 'El nombre es obligatorio'],
-        unique: true
+        unique: true // Indicate that this property is an index
     },
     estado: {
         type: Boolean,
@@ -19,9 +19,11 @@ const CategoriaSchema = Schema({
 });
 
 
-CategoriaSchema.methods.toJSON = function() {
-    const { __v, estado, ...data  } = this.toObject();
-    return data;
+CategoriaSchema.methods.toJSON = function() { // Add functionality to the schemas, overriding toJSON method
+    const { __v, estado, ...data  } = this.toObject(); // "this" only works in "normal" functions, not in "arrow" functions
+    // this.toObject returns the literal javascript object
+    // Destructuring to take out __v and estado, outside the rest
+    return data; // --> It won't return neither __v nor estado
 }
 
 

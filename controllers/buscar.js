@@ -15,14 +15,14 @@ const buscarUsuarios = async( termino = '', res = response ) => {
     const esMongoID = ObjectId.isValid( termino ); // TRUE 
 
     if ( esMongoID ) {
-        const usuario = await Usuario.findById(termino);
+        const usuario = await Usuario.findById(termino); // Existing default method in all models
         return res.json({
             results: ( usuario ) ? [ usuario ] : []
         });
     }
 
     const regex = new RegExp( termino, 'i' );
-    const usuarios = await Usuario.find({
+    const usuarios = await Usuario.find({  // Existing default method in all models
         $or: [{ nombre: regex }, { correo: regex }],
         $and: [{ estado: true }]
     });
@@ -38,14 +38,14 @@ const buscarCategorias = async( termino = '', res = response ) => {
     const esMongoID = ObjectId.isValid( termino ); // TRUE 
 
     if ( esMongoID ) {
-        const categoria = await Categoria.findById(termino);
+        const categoria = await Categoria.findById(termino); // Existing default method in all models
         return res.json({
             results: ( categoria ) ? [ categoria ] : []
         });
     }
 
     const regex = new RegExp( termino, 'i' );
-    const categorias = await Categoria.find({ nombre: regex, estado: true });
+    const categorias = await Categoria.find({ nombre: regex, estado: true }); // Existing default method in all models
 
     res.json({
         results: categorias
@@ -58,7 +58,7 @@ const buscarProductos = async( termino = '', res = response ) => {
     const esMongoID = ObjectId.isValid( termino ); // TRUE 
 
     if ( esMongoID ) {
-        const producto = await Producto.findById(termino)
+        const producto = await Producto.findById(termino) // Existing default method in all models
                             .populate('categoria','nombre');
         return res.json({
             results: ( producto ) ? [ producto ] : []
@@ -66,7 +66,7 @@ const buscarProductos = async( termino = '', res = response ) => {
     }
 
     const regex = new RegExp( termino, 'i' );
-    const productos = await Producto.find({ nombre: regex, estado: true })
+    const productos = await Producto.find({ nombre: regex, estado: true }) // Existing default method in all models
                             .populate('categoria','nombre')
 
     res.json({
@@ -78,7 +78,7 @@ const buscarProductos = async( termino = '', res = response ) => {
 
 const buscar = ( req, res = response ) => {
     
-    const { coleccion, termino  } = req.params;
+    const { coleccion, termino  } = req.params; // Get the path params indicated in the request with ":"
 
     if ( !coleccionesPermitidas.includes( coleccion ) ) {
         return res.status(400).json({

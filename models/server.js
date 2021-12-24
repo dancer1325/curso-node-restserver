@@ -1,24 +1,23 @@
-const express = require('express');
-const cors = require('cors');
-const fileUpload = require('express-fileupload');
-
-const { dbConnection } = require('../database/config');
+const express = require("express"); // Use express package to manage webserver
+const cors = require("cors");
+const fileUpload = require("express-fileupload");
+const { dbConnection } = require("../database/config");
 
 class Server {
-
+    // Class to manage the express app
     constructor() {
-        this.app  = express();
-        this.port = process.env.PORT;
+        this.app = express(); // Create express app. Use this because it's in that context
+        this.port = process.env.PORT; // Manage the variable port indicated in the .env file
 
         this.paths = {
-            auth:       '/api/auth',
-            buscar:     '/api/buscar',
-            categorias: '/api/categorias',
-            productos:  '/api/productos',
-            usuarios:   '/api/usuarios',
-            uploads:    '/api/uploads',
-        }
-
+            // Define all the paths to the different pages
+            auth: "/api/auth",
+            buscar: "/api/buscar",
+            categorias: "/api/categorias",
+            productos: "/api/productos",
+            usuarios: "/api/usuarios",
+            uploads: "/api/uploads",
+        };
 
         // Conectar a base de datos
         this.conectarDB();
@@ -34,47 +33,41 @@ class Server {
         await dbConnection();
     }
 
-
     middlewares() {
+        // CORS -- Mount the specific cors middleware function
+        this.app.use(cors());
 
-        // CORS
-        this.app.use( cors() );
+        // Lectura y parseo del body -- Mount the specific middleware function for parsing incoming requests with json as payload
+        this.app.use(express.json());
 
-        // Lectura y parseo del body
-        this.app.use( express.json() );
+        // Directorio Público -- Mount the specific middleware function for serving static files
+        this.app.use(express.static("public")); // Indicate the static webServer folder in which to look for the index.html
 
-        // Directorio Público
-        this.app.use( express.static('public') );
-
-        // Fileupload - Carga de archivos
-        this.app.use( fileUpload({
-            useTempFiles : true,
-            tempFileDir : '/tmp/',
-            createParentPath: true
-        }));
-
+        // Fileupload - Carga de archivos -- Mount the specific middleware function for accessing to the files previously loaded
+        this.app.use(
+            fileUpload({
+                useTempFiles: true, // Use temp files for managing the upload process
+                tempFileDir: "/tmp/",
+                createParentPath: true, // Create automatically the directory path specified
+            })
+        );
     }
 
     routes() {
-        
-        this.app.use( this.paths.auth, require('../routes/auth'));
-        this.app.use( this.paths.buscar, require('../routes/buscar'));
-        this.app.use( this.paths.categorias, require('../routes/categorias'));
-        this.app.use( this.paths.productos, require('../routes/productos'));
-        this.app.use( this.paths.usuarios, require('../routes/usuarios'));
-        this.app.use( this.paths.uploads, require('../routes/uploads'));
-        
+        this.app.use(this.paths.auth, require("../routes/auth")); // Mount the middleware function at the specified path with a callback
+        this.app.use(this.paths.buscar, require("../routes/buscar")); // Mount the middleware function at the specified path with a callback
+        this.app.use(this.paths.categorias, require("../routes/categorias")); // Mount the middleware function at the specified path with a callback
+        this.app.use(this.paths.productos, require("../routes/productos")); // Mount the middleware function at the specified path with a callback
+        this.app.use(this.paths.usuarios, require("../routes/usuarios")); // Mount the middleware function at the specified path with a callback
+        this.app.use(this.paths.uploads, require("../routes/uploads")); // Mount the middleware function at the specified path with a callback
     }
 
     listen() {
-        this.app.listen( this.port, () => {
-            console.log('Servidor corriendo en puerto', this.port );
+        // Method to indicate the port of the express app
+        this.app.listen(this.port, () => {
+            console.log("Servidor corriendo en puerto", this.port);
         });
     }
-
 }
-
-
-
 
 module.exports = Server;

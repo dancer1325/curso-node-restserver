@@ -35,7 +35,7 @@ const actualizarImagen = async(req, res = response ) => {
 
     switch ( coleccion ) {
         case 'usuarios':
-            modelo = await Usuario.findById(id);
+            modelo = await Usuario.findById(id); // Existing default method in all models
             if ( !modelo ) {
                 return res.status(400).json({
                     msg: `No existe un usuario con el id ${ id }`
@@ -45,7 +45,7 @@ const actualizarImagen = async(req, res = response ) => {
         break;
 
         case 'productos':
-            modelo = await Producto.findById(id);
+            modelo = await Producto.findById(id); // Existing default method in all models
             if ( !modelo ) {
                 return res.status(400).json({
                     msg: `No existe un producto con el id ${ id }`
@@ -72,7 +72,7 @@ const actualizarImagen = async(req, res = response ) => {
     const nombre = await subirArchivo( req.files, undefined, coleccion );
     modelo.img = nombre;
 
-    await modelo.save();
+    await modelo.save(); // Existing default method in all models
 
 
     res.json( modelo );
@@ -82,13 +82,13 @@ const actualizarImagen = async(req, res = response ) => {
 
 const actualizarImagenCloudinary = async(req, res = response ) => {
 
-    const { id, coleccion } = req.params;
+    const { id, coleccion } = req.params; // Get the path params indicated in the request with ":"
 
     let modelo;
 
     switch ( coleccion ) {
         case 'usuarios':
-            modelo = await Usuario.findById(id);
+            modelo = await Usuario.findById(id); // Existing default method in all models
             if ( !modelo ) {
                 return res.status(400).json({
                     msg: `No existe un usuario con el id ${ id }`
@@ -98,7 +98,7 @@ const actualizarImagenCloudinary = async(req, res = response ) => {
         break;
 
         case 'productos':
-            modelo = await Producto.findById(id);
+            modelo = await Producto.findById(id); // Existing default method in all models
             if ( !modelo ) {
                 return res.status(400).json({
                     msg: `No existe un producto con el id ${ id }`
@@ -125,7 +125,7 @@ const actualizarImagenCloudinary = async(req, res = response ) => {
     const { secure_url } = await cloudinary.uploader.upload( tempFilePath );
     modelo.img = secure_url;
 
-    await modelo.save();
+    await modelo.save(); // Existing default method in all models
 
 
     res.json( modelo );
@@ -134,13 +134,13 @@ const actualizarImagenCloudinary = async(req, res = response ) => {
 
 const mostrarImagen = async(req, res = response ) => {
 
-    const { id, coleccion } = req.params;
+    const { id, coleccion } = req.params; // Get the path params indicated in the request with ":"
 
     let modelo;
 
     switch ( coleccion ) {
         case 'usuarios':
-            modelo = await Usuario.findById(id);
+            modelo = await Usuario.findById(id); // Existing default method in all models
             if ( !modelo ) {
                 return res.status(400).json({
                     msg: `No existe un usuario con el id ${ id }`
@@ -150,7 +150,7 @@ const mostrarImagen = async(req, res = response ) => {
         break;
 
         case 'productos':
-            modelo = await Producto.findById(id);
+            modelo = await Producto.findById(id); // Existing default method in all models
             if ( !modelo ) {
                 return res.status(400).json({
                     msg: `No existe un producto con el id ${ id }`

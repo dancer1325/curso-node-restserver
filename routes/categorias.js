@@ -1,55 +1,70 @@
-const { Router } = require('express');
-const { check } = require('express-validator');
+const { Router } = require("express");
+const { check } = require("express-validator");
 
-const { validarJWT, validarCampos, esAdminRole } = require('../middlewares');
+const { validarJWT, validarCampos, esAdminRole } = require("../middlewares");
 
-const { crearCategoria,
-        obtenerCategorias,
-        obtenerCategoria,
-        actualizarCategoria, 
-        borrarCategoria } = require('../controllers/categorias');
-const { existeCategoriaPorId } = require('../helpers/db-validators');
+const {
+    crearCategoria,
+    obtenerCategorias,
+    obtenerCategoria,
+    actualizarCategoria,
+    borrarCategoria,
+} = require("../controllers/categorias");
+const { existeCategoriaPorId } = require("../helpers/db-validators");
 
-const router = Router();
+const router = Router(); // Create a router instance
 
 /**
  * {{url}}/api/categorias
  */
 
 //  Obtener todas las categorias - publico
-router.get('/', obtenerCategorias );
+router.get("/", obtenerCategorias);
 
 // Obtener una categoria por id - publico
-router.get('/:id',[
-    check('id', 'No es un id de Mongo válido').isMongoId(),
-    check('id').custom( existeCategoriaPorId ),
-    validarCampos,
-], obtenerCategoria );
+router.get( // Indicate path parameters with ":"
+    "/:id", [
+        check("id", "No es un id de Mongo válido").isMongoId(), // Validation middlewares contained into express-validator
+        check("id").custom(existeCategoriaPorId), // Customize validation
+        //check("id").custom((id) => existeCategoriaPorId(id)), // It's the same to the previous one, but indicating all in the arrow function
+        validarCampos, //Customize validation middleware
+    ],
+    obtenerCategoria
+);
 
 // Crear categoria - privado - cualquier persona con un token válido
-router.post('/', [ 
-    validarJWT,
-    check('nombre','El nombre es obligatorio').not().isEmpty(),
-    validarCampos
-], crearCategoria );
+router.post(
+    "/", [
+        validarJWT, //Customize validation middleware
+        check("nombre", "El nombre es obligatorio").not().isEmpty(), // Validation middlewares contained into express-validator
+        validarCampos, //Customize validation middleware
+    ],
+    crearCategoria
+);
 
 // Actualizar - privado - cualquiera con token válido
-router.put('/:id',[
-    validarJWT,
-    check('nombre','El nombre es obligatorio').not().isEmpty(),
-    check('id').custom( existeCategoriaPorId ),
-    validarCampos
-],actualizarCategoria );
+router.put( // Indicate path parameters with ":"
+    "/:id", [
+        validarJWT,
+        check("nombre", "El nombre es obligatorio").not().isEmpty(), // Validation middlewares contained into express-validator
+        check("id").custom(existeCategoriaPorId), //Customize validation middleware
+        //check("id").custom((id) => existeCategoriaPorId(id)), //It's the same to the previous one, but indicating all in the arrow function
+        validarCampos, //Customize validation middleware
+    ],
+    actualizarCategoria
+);
 
 // Borrar una categoria - Admin
-router.delete('/:id',[
-    validarJWT,
-    esAdminRole,
-    check('id', 'No es un id de Mongo válido').isMongoId(),
-    check('id').custom( existeCategoriaPorId ),
-    validarCampos,
-],borrarCategoria);
-
-
+router.delete( // Indicate path parameters with ":"
+    "/:id", [
+        validarJWT,
+        esAdminRole, //Customize validation middleware
+        check("id", "No es un id de Mongo válido").isMongoId(), // Validation middlewares contained into express-validator
+        check("id").custom(existeCategoriaPorId), //Customize validation middleware
+        //check("id").custom((id) => existeCategoriaPorId(id)), // It's the same to the previous one, but indicating all in the arrow function
+        validarCampos, //Customize validation middleware
+    ],
+    borrarCategoria
+);
 
 module.exports = router;

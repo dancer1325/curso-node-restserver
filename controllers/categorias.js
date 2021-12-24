@@ -4,12 +4,12 @@ const { Categoria } = require('../models');
 
 const obtenerCategorias = async(req, res = response ) => {
 
-    const { limite = 5, desde = 0 } = req.query;
+    const { limite = 5, desde = 0 } = req.query; // For getting query params. Nothing has to be added in the route class
     const query = { estado: true };
 
     const [ total, categorias ] = await Promise.all([
-        Categoria.countDocuments(query),
-        Categoria.find(query)
+        Categoria.countDocuments(query), // Existing default method in all models
+        Categoria.find(query) // Existing default method in all models
             .populate('usuario', 'nombre')
             .skip( Number( desde ) )
             .limit(Number( limite ))
@@ -23,8 +23,8 @@ const obtenerCategorias = async(req, res = response ) => {
 
 const obtenerCategoria = async(req, res = response ) => {
 
-    const { id } = req.params;
-    const categoria = await Categoria.findById( id )
+    const { id } = req.params; // Get the path params indicated in the request with ":"
+    const categoria = await Categoria.findById( id ) // Existing default method in all models
                             .populate('usuario', 'nombre');
 
     res.json( categoria );
@@ -35,7 +35,7 @@ const crearCategoria = async(req, res = response ) => {
 
     const nombre = req.body.nombre.toUpperCase();
 
-    const categoriaDB = await Categoria.findOne({ nombre });
+    const categoriaDB = await Categoria.findOne({ nombre }); // Existing default method in all models
 
     if ( categoriaDB ) {
         return res.status(400).json({
@@ -52,7 +52,7 @@ const crearCategoria = async(req, res = response ) => {
     const categoria = new Categoria( data );
 
     // Guardar DB
-    await categoria.save();
+    await categoria.save(); // Existing default method in all models
 
     res.status(201).json(categoria);
 
@@ -60,13 +60,13 @@ const crearCategoria = async(req, res = response ) => {
 
 const actualizarCategoria = async( req, res = response ) => {
 
-    const { id } = req.params;
+    const { id } = req.params; // Get the path params indicated in the request with ":"
     const { estado, usuario, ...data } = req.body;
 
     data.nombre  = data.nombre.toUpperCase();
     data.usuario = req.usuario._id;
 
-    const categoria = await Categoria.findByIdAndUpdate(id, data, { new: true });
+    const categoria = await Categoria.findByIdAndUpdate(id, data, { new: true }); // Existing default method in all models
 
     res.json( categoria );
 
@@ -74,8 +74,8 @@ const actualizarCategoria = async( req, res = response ) => {
 
 const borrarCategoria = async(req, res =response ) => {
 
-    const { id } = req.params;
-    const categoriaBorrada = await Categoria.findByIdAndUpdate( id, { estado: false }, {new: true });
+    const { id } = req.params; // Get the path params indicated in the request with ":"
+    const categoriaBorrada = await Categoria.findByIdAndUpdate( id, { estado: false }, {new: true }); // Existing default method in all models
 
     res.json( categoriaBorrada );
 }

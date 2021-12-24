@@ -1,26 +1,29 @@
-const { Router } = require('express');
-const { check } = require('express-validator');
+const { Router } = require("express"); // Router express object
+const { check } = require("express-validator");
 
+const { validarCampos } = require("../middlewares/validar-campos");
 
-const { validarCampos } = require('../middlewares/validar-campos');
+const { login, googleSignin } = require("../controllers/auth");
 
+const router = Router(); // Create a router instance
 
-const { login, googleSignin } = require('../controllers/auth');
+router.post(
+    // Will manage any post request which ends in '/login'
+    "/login", [
+        check("correo", "El correo es obligatorio").isEmail(), // Validation middlewares contained into express-validator
+        check("password", "La contraseña es obligatoria").not().isEmpty(), // Validation middlewares contained into express-validator
+        validarCampos, //Customize validation middleware
+    ],
+    login
+);
 
-
-const router = Router();
-
-router.post('/login',[
-    check('correo', 'El correo es obligatorio').isEmail(),
-    check('password', 'La contraseña es obligatoria').not().isEmpty(),
-    validarCampos
-],login );
-
-router.post('/google',[
-    check('id_token', 'El id_token es necesario').not().isEmpty(),
-    validarCampos
-], googleSignin );
-
-
+router.post(
+    // Will manage any post request which ends in '/google'
+    "/google", [
+        check("id_token", "El id_token es necesario").not().isEmpty(), // Validation middlewares contained into express-validator
+        validarCampos, //Customize validation middleware
+    ],
+    googleSignin
+);
 
 module.exports = router;
