@@ -2,7 +2,7 @@ const path = require('path');
 const fs   = require('fs');
 
 const cloudinary = require('cloudinary').v2
-cloudinary.config( process.env.CLOUDINARY_URL );
+cloudinary.config( process.env.CLOUDINARY_URL ); // Configure Cloudinary
 
 const { response } = require('express');
 const { subirArchivo } = require('../helpers');
@@ -10,7 +10,7 @@ const { subirArchivo } = require('../helpers');
 const { Usuario, Producto } = require('../models');
 
 
-const cargarArchivo = async(req, res = response) => {
+const cargarArchivo = async(req, res = response) => { // Indicated the res's type to have shortcuts
 
 
     try {
@@ -64,13 +64,13 @@ const actualizarImagen = async(req, res = response ) => {
         // Hay que borrar la imagen del servidor
         const pathImagen = path.join( __dirname, '../uploads', coleccion, modelo.img );
         if ( fs.existsSync( pathImagen ) ) {
-            fs.unlinkSync( pathImagen );
+            fs.unlinkSync( pathImagen ); // Delete a name and possibly the file it refers to
         }
     }
 
 
     const nombre = await subirArchivo( req.files, undefined, coleccion );
-    modelo.img = nombre;
+    modelo.img = nombre; // Store in the proper model into the field img, the url to the file in cloudinary
 
     await modelo.save(); // Existing default method in all models
 
@@ -117,13 +117,13 @@ const actualizarImagenCloudinary = async(req, res = response ) => {
         const nombreArr = modelo.img.split('/');
         const nombre    = nombreArr[ nombreArr.length - 1 ];
         const [ public_id ] = nombre.split('.');
-        cloudinary.uploader.destroy( public_id );
+        cloudinary.uploader.destroy( public_id ); // Clean previous images in cloudinary
     }
 
 
-    const { tempFilePath } = req.files.archivo
-    const { secure_url } = await cloudinary.uploader.upload( tempFilePath );
-    modelo.img = secure_url;
+    const { tempFilePath } = req.files.archivo // ".archivo" because it's the name chosen by us to send the files
+    const { secure_url } = await cloudinary.uploader.upload( tempFilePath ); // Upload a image
+    modelo.img = secure_url; // Store in the corresponding model into the img field, the UploadApiResponse's secure_url
 
     await modelo.save(); // Existing default method in all models
 
@@ -169,12 +169,12 @@ const mostrarImagen = async(req, res = response ) => {
         // Hay que borrar la imagen del servidor
         const pathImagen = path.join( __dirname, '../uploads', coleccion, modelo.img );
         if ( fs.existsSync( pathImagen ) ) {
-            return res.sendFile( pathImagen )
+            return res.sendFile( pathImagen ) // Transfer a file at the given path
         }
     }
 
-    const pathImagen = path.join( __dirname, '../assets/no-image.jpg');
-    res.sendFile( pathImagen );
+    const pathImagen = path.join( __dirname, '../assets/no-image.jpg'); // Send the image by default in case nothing found by the request
+    res.sendFile( pathImagen ); // Transfer a file at the given path
 }
 
 

@@ -48,7 +48,7 @@ class Server {
             fileUpload({
                 useTempFiles: true, // Use temp files for managing the upload process
                 tempFileDir: "/tmp/",
-                createParentPath: true, // Create automatically the directory path specified
+                createParentPath: true, // If you invoke .mv and there is no folder --> Create it automatically
             })
         );
     }
