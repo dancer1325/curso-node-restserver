@@ -12,8 +12,8 @@ const ProductoSchema = Schema({
         required: true
     },
     usuario: {
-        type: Schema.Types.ObjectId,
-        ref: 'Usuario',
+        type: Schema.Types.ObjectId, // Link to another schema
+        ref: 'Usuario', // Reference must match with the name of the model
         required: true
     },
     precio: {
@@ -21,8 +21,8 @@ const ProductoSchema = Schema({
         default: 0
     },
     categoria: {
-        type: Schema.Types.ObjectId,
-        ref: 'Categoria',
+        type: Schema.Types.ObjectId, // Link to another schema
+        ref: 'Categoria',  // Reference must match with the name of the model
         required: true
     },
     descripcion: { type: String },

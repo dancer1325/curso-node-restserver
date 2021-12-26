@@ -55,7 +55,7 @@ const googleSignin = async(req, res = response) => {
     try {
         const { correo, nombre, img } = await googleVerify(id_token);
 
-        let usuario = await Usuario.findOne({ correo }); // Existing default method in all models
+        let usuario = await Usuario.findOne({ correo }); // Existing default method in all models. Identify in our database based on the email
 
         if (!usuario) {
             // Tengo que crearlo

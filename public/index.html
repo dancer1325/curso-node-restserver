@@ -26,7 +26,7 @@
 
         var url = ( window.location.hostname.includes('localhost') )
                     ? 'http://localhost:8080/api/auth/google'
-                    : 'https://restserver-curso-fher.herokuapp.com/api/auth/google';
+                    : 'https://restserver-curso-fher.herokuapp.com/api/auth/google'; // Switch to the value when I deploy it
 
 
         function onSignIn(googleUser) {
@@ -40,7 +40,7 @@
             var id_token = googleUser.getAuthResponse().id_token;
             const data = { id_token };
 
-            fetch( url, {
+            fetch( url, { // Make HTTP request
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify( data )

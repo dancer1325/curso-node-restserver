@@ -7,12 +7,12 @@ const obtenerProductos = async(req, res = response ) => {
     const { limite = 5, desde = 0 } = req.query; // For getting query params. Nothing has to be added in the route class
     const query = { estado: true };
 
-    const [ total, productos ] = await Promise.all([
+    const [ total, productos ] = await Promise.all([ // Promise.all launch several await requests in parallel
         Producto.countDocuments(query), // Existing default method in all models
         Producto.find(query) // Existing default method in all models
             .populate('usuario', 'nombre')
             .populate('categoria', 'nombre')
-            .skip( Number( desde ) )
+            .skip( Number( desde ) ) // Since req.query params are string, and we need numbers --> We need to cast them
             .limit(Number( limite ))
     ]);
 
